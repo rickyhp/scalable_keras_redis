@@ -181,30 +181,36 @@ def classify_process():
 		time.sleep(SERVER_SLEEP)
 
 def img_scraper(website):
-	r = requests.get(website)
+	if 'http://' not in website:	
+		r = requests.get('http://'+website)
+		folderName = website
+	else: 
+		r = requests.get(website)
+		folderName = website.split('//')[1]
 	data = r.text
-	soup = BeautifulSoup(data, "lxml")
-	folderName = website.split('//')[1]
+	soup = BeautifulSoup(data, "lxml")	
 	i = 1
 	for link in soup.find_all('img'):
-	        image = link.get("src")
-	        if 'http' not in image or 'https' not in image:
-	            image = 'http://' + folderName + '/' + image
-	        print('image url = ' + image)
-	        r2 = requests.get(image)
-	        content_type = r2.headers['content-type']
-	        extension = mimetypes.guess_extension(content_type)
+		image = link.get("src")
+		if(image is None):
+			image = link.get("srcset")
+		if 'http' not in image or 'https' not in image:
+			image = 'http://' + folderName + '/' + image
+		print('image url = ' + image)
+		r2 = requests.get(image)
+		content_type = r2.headers['content-type']
+		extension = mimetypes.guess_extension(content_type)
 
-	        try:
-	            os.makedirs(folderName)
-	        except OSError as e:
-	            if e.errno != errno.EEXIST:
-	                raise
-	        if(extension is None):
-	            extension = ''
-	        with open(folderName+'/'+str(i)+extension, "wb") as f:
-	            f.write(r2.content)
-	            i = i + 1
+		try:
+			os.makedirs(folderName)
+		except OSError as e:
+			if e.errno != errno.EEXIST:
+				raise
+		if(extension is None):
+			extension = ''
+		with open(folderName+'/'+str(i)+extension, "wb") as f:
+			f.write(r2.content)
+			i = i + 1
 	return folderName
 
 @app.route("/predicturl", methods=["GET"])
