@@ -212,8 +212,8 @@ def predicturl():
 	# /predicturl?url=http://xxx.com/abcnews
 	website = flask.request.args.get('url')
 	print('scraping images at: ', website)
-	#folderName = img_scraper(website)
-	folderName = "etcanada.com"
+	folderName = img_scraper(website)
+	#folderName = "etcanada.com"
 	data = {"success": False}
 	for filename in glob.glob(folderName+"/**/*.*", recursive=True):
 		print("filename : ",filename)
