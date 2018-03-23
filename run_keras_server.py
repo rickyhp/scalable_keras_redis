@@ -5,6 +5,8 @@
 # 	curl -X POST -F image=@jemma.png 'http://localhost:5000/predict'
 # Submit a request via Python:
 #	python simple_request.py 
+# Submit a request via browser example
+#       http://127.0.0.1:5000/predicturl?url=etcanada.com/news/299494/canadian-tennis-star-eugenie-bouchard-goes-topless-in-sports-illustrated-swimsuit-2018-issue
 
 # import the necessary packages
 from keras.applications import ResNet50
