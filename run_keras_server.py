@@ -169,8 +169,12 @@ def classify_process():
 
 				# Scores is the array containing SFW / NSFW image probabilities
 				# scores[1] indicates the NSFW probability
-				print("NSFW score: %s " % scores[1])
-				r = {"label": imageIDs[len(imageIDs)-1], "probability": float(scores[1])}
+				if(len(scores) > 0):
+					print("NSFW score: %s " % scores[1])
+					r = {"label": imageIDs[len(imageIDs)-1], "probability": float(scores[1])}
+				else:
+					print("Unable to predict, set prob to -1.0")
+					r = {"label": imageIDs[len(imageIDs)-1], "probability": -1.0}
 				output = []
 				output.append(r)
 				db.set(imageIDs[len(imageIDs)-1],json.dumps(output))
@@ -181,6 +185,8 @@ def classify_process():
 		time.sleep(SERVER_SLEEP)
 
 def img_scraper(website):
+	if 'https' in website:
+		website = website.replace('https','http')
 	if 'http://' not in website:	
 		r = requests.get('http://'+website)
 		folderName = website
@@ -194,23 +200,28 @@ def img_scraper(website):
 		image = link.get("src")
 		if(image is None):
 			image = link.get("srcset")
-		if 'http' not in image or 'https' not in image:
-			image = 'http://' + folderName + '/' + image
-		print('image url = ' + image)
-		r2 = requests.get(image)
-		content_type = r2.headers['content-type']
-		extension = mimetypes.guess_extension(content_type)
+		if(image is not None):
+			if 'http' not in image:
+				image = 'http://' + folderName + '/' + image
+			if 'https' in image:
+				image = image.replace('https','http')
+			print('image url = ' + image)
+			r2 = requests.get(image)
+			content_type = r2.headers['content-type']
+			extension = mimetypes.guess_extension(content_type)
 
-		try:
-			os.makedirs(folderName)
-		except OSError as e:
-			if e.errno != errno.EEXIST:
-				raise
-		if(extension is None):
-			extension = ''
-		with open(folderName+'/'+str(i)+extension, "wb") as f:
-			f.write(r2.content)
-			i = i + 1
+			try:
+				os.makedirs(folderName)
+			except OSError as e:
+				if e.errno != errno.EEXIST:
+					raise
+			if(extension is None):
+				extension = ''
+			with open(folderName+'/'+str(i)+extension, "wb") as f:
+				f.write(r2.content)
+				i = i + 1
+		else:
+			print('Unable to scrap website')
 	return folderName
 
 @app.route("/predicturl", methods=["GET"])
@@ -319,15 +330,17 @@ def resize_image(data, sz=(256, 256)):
     :returns bytearray:
         A byte array with the resized image
     """
-    im = Image.open(BytesIO(data))
-    
-    if im.mode != "RGB":
-        im = im.convert('RGB')
-    imr = im.resize(sz, resample=Image.BILINEAR)
-    fh_im = BytesIO()
-    imr.save(fh_im, format='JPEG')
-    fh_im.seek(0)
-    return fh_im
+    try:
+      im = Image.open(BytesIO(data))	    
+      if im.mode != "RGB":
+         im = im.convert('RGB')
+      imr = im.resize(sz, resample=Image.BILINEAR)
+      fh_im = BytesIO()
+      imr.save(fh_im, format='JPEG')
+      fh_im.seek(0)
+      return fh_im
+    except:
+      return None
 
 # open_nsfw caffe model
 def caffe_preprocess_and_compute(pimg, caffe_transformer=None, caffe_net=None,
@@ -352,24 +365,24 @@ def caffe_preprocess_and_compute(pimg, caffe_transformer=None, caffe_net=None,
             output_layers = caffe_net.outputs
 
         img_bytes = resize_image(pimg, sz=(256, 256))
-        image = caffe.io.load_image(img_bytes)
-
-        H, W, _ = image.shape
-        _, _, h, w = caffe_net.blobs['data'].data.shape
-        h_off = max((H - h) / 2, 0)
-        w_off = max((W - w) / 2, 0)
-        crop = image[int(h_off):int(h_off + h), int(w_off):int(w_off + w), :]
-        transformed_image = caffe_transformer.preprocess('data', crop)
-        transformed_image.shape = (1,) + transformed_image.shape
-
-        input_name = caffe_net.inputs[0]
-        all_outputs = caffe_net.forward_all(blobs=output_layers,
+        if(img_bytes is not None):
+         image = caffe.io.load_image(img_bytes)
+         H, W, _ = image.shape
+         _, _, h, w = caffe_net.blobs['data'].data.shape
+         h_off = max((H - h) / 2, 0)
+         w_off = max((W - w) / 2, 0)
+         crop = image[int(h_off):int(h_off + h), int(w_off):int(w_off + w), :]
+         transformed_image = caffe_transformer.preprocess('data', crop)
+         transformed_image.shape = (1,) + transformed_image.shape
+         input_name = caffe_net.inputs[0]
+         all_outputs = caffe_net.forward_all(blobs=output_layers,
                                             **{input_name: transformed_image})
-
-        outputs = all_outputs[output_layers[0]][0].astype(float)
-        return outputs
+         outputs = all_outputs[output_layers[0]][0].astype(float)
+         return outputs
+        else:
+         return []
     else:
-        return []
+         return []
 
 # if this is the main thread of execution first load the model and
 # then start the server
