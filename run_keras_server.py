@@ -154,7 +154,7 @@ def classify_process():
             r = {"label": imageIDs[len(imageIDs)-1], "probability": float(scores[1])}
         elif(len(imageIDs) > 0 and len(scores) > 0 and model == RESNET50):
             print("RESNET50 score: ", scores[0])
-            r = {"label": imageIDs[len(imageIDs)-1], "probability": float(scores[0])}
+            r = {"label": scores[0], "probability": float(scores[1])}
         elif(len(imageIDs) > 0):
             print("Unable to predict, set prob to -1.0")
             r = {"label": imageIDs[len(imageIDs)-1], "probability": -1.0}
@@ -347,6 +347,7 @@ def resnet50_preprocess_and_compute(pimg, model):
         preds = model.predict(image)
         predret = decode_predictions(preds, top=1)[0]
         print(predret[0])
+        arrRet.append(predret[0][1])
         arrRet.append(predret[0][2])
 
     return arrRet
