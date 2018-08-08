@@ -13,6 +13,7 @@ from keras.applications import ResNet50
 from keras.preprocessing.image import img_to_array
 from keras.applications import imagenet_utils
 from keras.applications.resnet50 import preprocess_input, decode_predictions
+from keras.models import load_model
 
 from threading import Thread
 from PIL import Image
@@ -33,6 +34,10 @@ import caffe
 from io import BytesIO
 import flask
 from urllib.parse import urlparse 
+from pymongo import MongoClient
+
+from ScrapingImage import Scraping_Image
+from JSONEncoder import JSONEncoder
 
 # initialize constants used to control image spatial dimensions and
 # data type
@@ -55,6 +60,7 @@ db = redis.StrictRedis(host="localhost", port=6379, db=0)
 
 RESNET50 = 'resnet50'
 OPEN_NSFW = 'open_nsfw'
+ALCOHOL_GAMBLING = 'alcohol_gambling'
 
 model = OPEN_NSFW
 
@@ -92,16 +98,17 @@ def prepare_image(image, target):
 
 def classify_process():
     #model = 'open_nsfw'
-    model = RESNET50
+    #model = RESNET50
+    model = 'ALL'
 
     # load the pre-trained Keras model (here we are using a model
     # pre-trained on ImageNet and provided by Keras, but you can
     # substitute in your own networks just as easily)
     print("* Loading model...")
-    if(model == RESNET50):
+    if(model == RESNET50 or model == 'ALL'):
         resnet50_net = ResNet50(weights="imagenet")
         print("* ResNet50 imagenet model loaded")
-    elif(model == OPEN_NSFW):
+    if(model == OPEN_NSFW or model == 'ALL'):
         # Pre-load caffe model.
         nsfw_net = caffe.Net('nsfw_model/deploy.prototxt',  # pylint: disable=invalid-name
                     'nsfw_model/resnet_50_1by2_nsfw.caffemodel', caffe.TEST)
@@ -113,14 +120,25 @@ def classify_process():
         caffe_transformer.set_mean('data', np.array([104, 117, 123]))  # subtract the dataset-mean value in each channel
         caffe_transformer.set_raw_scale('data', 255)  # rescale from [0, 1] to [0, 255]
         caffe_transformer.set_channel_swap('data', (2, 1, 0))  # swap channels from RGB to BGR
-
+    if(model == ALCOHOL_GAMBLING or model == 'ALL'):
+        alcoholgambling_net = load_model('alcohol_gambling_020818_2249.model')
+        print("* alcohol_gambling model loaded")
+    # Connect to local mongodb instance to store classification results
+    mongoclient = MongoClient("localhost",27017)
+    # dbname : adtech
+    dbstore = mongoclient['adtech']
+    # collection : measure
+    colldb = dbstore['measure']
+    
     # continually pool for new images to classify
     while True:
         # attempt to grab a batch of images from the database, then
         # initialize the image IDs and batch of images themselves
         queue = db.lrange(IMAGE_QUEUE, 0, BATCH_SIZE - 1)
         imageIDs = []
+        websites = []
         batch = None
+        r = None
 
         # loop over the queue
         for q in queue:
@@ -140,36 +158,47 @@ def classify_process():
             print("=== Load from redis : ",q["id"])
             # update the list of image IDs
             imageIDs.append(q["id"])
+            websites.append(q["website"])
 
         scores = []
-        if(len(imageIDs) > 0 and model == OPEN_NSFW):
+        if(len(imageIDs) > 0 and (model == OPEN_NSFW or model == 'ALL')):
             print('Using open_nsfw to predict')
             scores = caffe_preprocess_and_compute(batch, caffe_transformer=caffe_transformer, caffe_net=nsfw_net,output_layers=['prob'])
-        if(len(imageIDs) > 0 and model == RESNET50):
+            print("NSFW score: %s " % scores[1])
+            r = {"website" : websites[len(imageIDs)-1], "model" : "nsfw", "label": imageIDs[len(imageIDs)-1], "probability": float(scores[1])}
+            colldb.insert(r)
+            
+        if(len(imageIDs) > 0 and (model == RESNET50 or model == 'ALL')):
             print('Using resnet50 to predict')
             scores = resnet50_preprocess_and_compute(batch, resnet50_net)
-
-        if(len(imageIDs) > 0 and len(scores) > 0 and model == OPEN_NSFW):
-            print("NSFW score: %s " % scores[1])
-            r = {"label": imageIDs[len(imageIDs)-1], "probability": float(scores[1])}
-        elif(len(imageIDs) > 0 and len(scores) > 0 and model == RESNET50):
             print("RESNET50 score: ", scores[0])
-            r = {"label": scores[0], "probability": float(scores[1])}
-        elif(len(imageIDs) > 0):
+            r = {"website" : websites[len(imageIDs)-1], "model" : "resnet50", "label": scores[0], "probability": float(scores[1])}
+            colldb.insert(r)
+        
+        if(len(imageIDs) > 0 and (model == ALCOHOL_GAMBLING or model == 'ALL')):
+            print('Using alcohol_gambling to predict')
+            scores = alcoholgambling_preprocess_and_compute(batch, alcoholgambling_net)
+            print("Alcohol_Gambling score: ", scores[0], " : ", scores[1])
+            r = {"website" : websites[len(imageIDs)-1], "model" : "alcohol_gambling", "label": scores[0], "probability": float(scores[1])}
+            colldb.insert(r)
+            
+        if(len(imageIDs) > 0 and len(scores) <= 0):
             print("Unable to predict, set prob to -1.0")
             r = {"label": imageIDs[len(imageIDs)-1], "probability": -1.0}
-        else:
-            #print("No image to predict")
+        
+        if(r is None):      
             r = {""}
 
         if(len(imageIDs) > 0):
             output = []
-            output.append(r)
+            output.append(r)            
+            output = JSONEncoder().encode(output)
+            print("Serializing: ",output)
             db.set(imageIDs[len(imageIDs)-1],json.dumps(output))
             db.ltrim(IMAGE_QUEUE, len(imageIDs), -1)
 
         # sleep for a small amount
-        time.sleep(SERVER_SLEEP)
+        time.sleep(SERVER_SLEEP)    
 
 def img_scraper(website):
     if 'https' in website:
@@ -182,7 +211,6 @@ def img_scraper(website):
         folderName = website.split('//')[1]
     data = r.text
     soup = BeautifulSoup(data, "lxml")    
-    i = 1
     for link in soup.find_all('img'):
         image = link.get("src")
         if(image is None):
@@ -217,8 +245,11 @@ def predicturl():
     # /predicturl?url=http://xxx.com/abcnews    
     website = flask.request.args.get('url')
     print('scraping images at: ', website)
-    folderName = img_scraper(website)
+    #folderName = img_scraper(website)
     #folderName = "etcanada.com"
+    scraping = Scraping_Image(website)
+    scraping.run()
+    folderName = scraping.dest_folder
     data = {"success": False}
     for filename in glob.glob(folderName+"/**/*.*", recursive=True):
         print("filename : ",filename)
@@ -226,7 +257,7 @@ def predicturl():
         #image = prepare_image(image, (IMAGE_WIDTH, IMAGE_HEIGHT))
         #image = image.copy(order="C")
         k = str(uuid.uuid4())
-        d = {"id": k, "image": filename}    
+        d = {"id": k, "image": filename, "website": website}    
         #d = {"id": k, "image": base64_encode_image(image)}
         db.rpush(IMAGE_QUEUE, json.dumps(d))
         print('pushed : ', d)
@@ -351,11 +382,24 @@ def resnet50_preprocess_and_compute(pimg, model):
         arrRet.append(predret[0][2])
 
     return arrRet
-#    x = image.img_to_array(img)
-#    x = np.expand_dims(x, axis=0)
-#    x = preprocess_input(x)
-#    preds = model.predict(x)
-#    print('preds : ', decode_predictions(preds, top=3)[0])
+
+def alcoholgambling_preprocess_and_compute(pimg, model):
+    arrRet = []
+    img = None
+    try:
+        img = Image.open(io.BytesIO(pimg))
+    except:
+        print('Unable to process data, skipping')
+        pass
+    if(img is not None):
+        image = prepare_image(img, target=(28,28))
+        (gambling,alcohol) = model.predict(image)[0]
+        label = "Alcohol" if alcohol > gambling else "Gambling"
+        proba = alcohol if alcohol > gambling else gambling
+        #label = "{}: {:.2f}%".format(label,proba * 100)
+        arrRet.append(label)
+        arrRet.append(proba)
+    return arrRet
 
 # open_nsfw caffe model
 def caffe_preprocess_and_compute(pimg, caffe_transformer=None, caffe_net=None,
