@@ -1,0 +1,9 @@
+1) start redis
+cd /mnt/workspace/redis-stable/src
+./redis-server
+
+2) start model webserver
+cd /home/rp/CODE/scalable_keras_redis
+python3 run_keras_server.py
+
+

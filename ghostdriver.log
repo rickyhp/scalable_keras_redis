@@ -1,0 +1,154 @@
+[INFO  - 2018-08-02T16:33:54.584Z] GhostDriver - Main - running on port 59949
+[INFO  - 2018-08-02T16:33:55.249Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2018-08-02T16:33:55.250Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.customHeaders:  - {}
+[INFO  - 2018-08-02T16:33:55.250Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2018-08-02T16:33:55.251Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: d9167a80-9671-11e8-b558-d3454bc30d0a
+[ERROR - 2018-08-02T16:34:02.485Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - msg: ReferenceError: Can't find variable: Promise
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:34:02.490Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - stack:
+  fetch (https://cdn.districtm.io/ids/idsync.96175851.js:1)
+  e (https://cdn.districtm.io/ids/idsync.96175851.js:1)
+  (anonymous function) (https://cdn.districtm.io/ids/idsync.96175851.js:1)
+  i (https://cdn.districtm.io/ids/idsync.96175851.js:1)
+  (anonymous function) (https://cdn.districtm.io/ids/idsync.96175851.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:34:09.956Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - msg: InvalidStateError: DOM Exception 11: An attempt was made to use an object that is not, or is no longer, usable.
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:34:09.956Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - stack:
+  onreadystatechange (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  open (:0)
+  ajax (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  value (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  forEach (:0)
+  value (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  forEach (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  fetchBids (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  defineSlot (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  defineSlot (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://s1.wp.com/_static/??-eJyNkOFuAjEIx19o2OhijB+Mz4It3lGvtJbenfPph4l+WHZxSwgQ+PGH4OYCLH4YA6mLZteR6tczrKJ+uHcAJO4qNlollhfsszSS9mBTPvFAMCpV7KxmQue8wJWsLZGqQQvdnyexTEzzn1ikVtBfoJLy/Zdq68n2uYmL0x5noAYeBQO6MowdizqPvifAiDdLzf9fwU7BhPcscOIQWDroaShUl370VoWah3AugEFt7pgO6+1mv9+uN7vP+A0rBaKR:1525)
+  push (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  hn (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  js (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:34:09.964Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - msg: InvalidStateError: DOM Exception 11: An attempt was made to use an object that is not, or is no longer, usable.
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:34:09.964Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - stack:
+  onreadystatechange (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  open (:0)
+  ajax (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  value (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  forEach (:0)
+  value (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  forEach (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  fetchBids (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  defineSlot (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  defineSlot (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://s1.wp.com/_static/??-eJyNkOFuAjEIx19o2OhijB+Mz4It3lGvtJbenfPph4l+WHZxSwgQ+PGH4OYCLH4YA6mLZteR6tczrKJ+uHcAJO4qNlollhfsszSS9mBTPvFAMCpV7KxmQue8wJWsLZGqQQvdnyexTEzzn1ikVtBfoJLy/Zdq68n2uYmL0x5noAYeBQO6MowdizqPvifAiDdLzf9fwU7BhPcscOIQWDroaShUl370VoWah3AugEFt7pgO6+1mv9+uN7vP+A0rBaKR:1525)
+  push (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  hn (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  js (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:34:09.965Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - msg: InvalidStateError: DOM Exception 11: An attempt was made to use an object that is not, or is no longer, usable.
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:34:09.965Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - stack:
+  onreadystatechange (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  open (:0)
+  ajax (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  value (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  forEach (:0)
+  value (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  forEach (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  fetchBids (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  defineSlot (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  defineSlot (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://s1.wp.com/_static/??-eJyNkOFuAjEIx19o2OhijB+Mz4It3lGvtJbenfPph4l+WHZxSwgQ+PGH4OYCLH4YA6mLZteR6tczrKJ+uHcAJO4qNlollhfsszSS9mBTPvFAMCpV7KxmQue8wJWsLZGqQQvdnyexTEzzn1ikVtBfoJLy/Zdq68n2uYmL0x5noAYeBQO6MowdizqPvifAiDdLzf9fwU7BhPcscOIQWDroaShUl370VoWah3AugEFt7pgO6+1mv9+uN7vP+A0rBaKR:1525)
+  push (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  hn (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  js (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:34:09.968Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - msg: InvalidStateError: DOM Exception 11: An attempt was made to use an object that is not, or is no longer, usable.
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:34:09.968Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - stack:
+  onreadystatechange (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  open (:0)
+  ajax (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  value (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  forEach (:0)
+  value (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  forEach (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  fetchBids (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  defineSlot (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  defineSlot (https://cdn.districtm.ca/merge/merge.v4.2.102566.js:2)
+  (anonymous function) (https://s1.wp.com/_static/??-eJyNkOFuAjEIx19o2OhijB+Mz4It3lGvtJbenfPph4l+WHZxSwgQ+PGH4OYCLH4YA6mLZteR6tczrKJ+uHcAJO4qNlollhfsszSS9mBTPvFAMCpV7KxmQue8wJWsLZGqQQvdnyexTEzzn1ikVtBfoJLy/Zdq68n2uYmL0x5noAYeBQO6MowdizqPvifAiDdLzf9fwU7BhPcscOIQWDroaShUl370VoWah3AugEFt7pgO6+1mv9+uN7vP+A0rBaKR:1525)
+  push (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  hn (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  js (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+  (anonymous function) (https://securepubads.g.doubleclick.net/gpt/pubads_impl_236.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:35:19.931Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - msg: TypeError: undefined is not a function (evaluating 'Object.assign({},e)')
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:35:19.931Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - stack:
+  value (https://cdn.districtm.ca/catfish/v2.0.catfish.min.js:1)
+  value (https://cdn.districtm.ca/catfish/v2.0.catfish.min.js:1)
+  (anonymous function) (https://cdn.districtm.ca/catfish/v2.0.catfish.min.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:35:31.230Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - msg: TypeError: undefined is not a function (evaluating 'e.load()')
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2018-08-02T16:35:31.230Z] Session [d9167a80-9671-11e8-b558-d3454bc30d0a] - page.onError - stack:
+  w (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:98)
+  forEach (:0)
+  prime (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:98)
+  init (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:98)
+  setup (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:98)
+  initializeJWPlayer (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:5430)
+  onContentPrepared (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:5362)
+  (anonymous function) (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:5294)
+  fire (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:6139)
+  _onRestrictionHandled (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:8088)
+  (anonymous function) (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:7992)
+  fire (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:6139)
+  (anonymous function) (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:6960)
+  (anonymous function) (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:7515)
+  onreadystatechange (https://videoplayer.smdg.ca/3.1.4/videoplayer.js:7536)
+
+  phantomjs://platform/console++.js:263 in error
+[INFO  - 2018-08-02T16:38:54.584Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2018-08-02T16:43:54.584Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2018-08-02T16:48:54.585Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2018-08-02T16:53:54.585Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2018-08-02T16:58:54.585Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2018-08-02T17:03:54.586Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2018-08-02T17:08:54.586Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
+[INFO  - 2018-08-02T17:13:53.731Z] SessionManagerReqHand - _cleanupWindowlessSessions - Asynchronous Sessions clean-up phase starting NOW
